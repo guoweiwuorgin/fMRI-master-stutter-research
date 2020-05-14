@@ -1,299 +1,157 @@
-%-----------------------------------------------------------------------
-% Job saved on 19-Feb-2019 16:15:54 by cfg_util (rev $Rev: 6134 $)
-% spm SPM - SPM12 (6225)
-clear all;
 % Initialise SPM
+% wuguowei using spm
 %--------------------------------------------------------------------------
+clear all
 spm('Defaults','fMRI');
 spm_jobman('initcfg');
-%spm_get_defaults('cmdline',1);
-%%
-number = [ '11';'12';'13';'14';'15';'16';];
-for i=1
-    q = number(i,:);
-data_path = 'G:\data\0010';
-f = spm_select('FPList', fullfile(data_path,['\FunImgARWS\',q]), '^swra.*\.nii$');
-% 改称你的文件路径
-f1 = spm_select('FPList',fullfile(data_path,['S2_FunImgARWS\',q]), '^swra.*\.nii$');
-
-outputdir = ['G:\data\newresult\00',q];
-xingweidata_path = 'G:\data\xingweixuejieguo';
-real_xw_data = [xingweidata_path,'\00',q];
-cd(real_xw_data);
-% 把下面的文件对应的改成你的不同条件的onset时间保存的excel
-run1fixonset_A= xlsread('run1fixonset_A');
-a_d = zeros(length(run1fixonset_A),1);
-run1fixonset_B = xlsread('run1fixonset_B');
-b_d = zeros(length(run1fixonset_B),1);
-run1fixonset_C = xlsread('run1fixonset_C');
-c_d = zeros(length(run1fixonset_C),1);
-run1fixonset_D = xlsread('run1fixonset_D');
-d_d = zeros(length(run1fixonset_D),1);
-run2fixonset_A = xlsread('run2fixonset_A');
-a1_d = zeros(length(run2fixonset_A),1);
-run2fixonset_B = xlsread('run2fixonset_B');
-b1_d = zeros(length(run2fixonset_B),1);
-run2fixonset_C = xlsread('run2fixonset_C');
-c1_d = zeros(length(run2fixonset_C),1);
-run2fixonset_D = xlsread('run2fixonset_D');
-d1_d = zeros(length(run2fixonset_D),1);
-run1piconset_A= xlsread('run1piconset_A');
-a_d1 = zeros(length(run1piconset_A),1);
-run1piconset_B = xlsread('run1piconset_B');
-b_d1 = zeros(length(run1piconset_B),1);
-run1piconset_C = xlsread('run1piconset_C');
-c_d1 = zeros(length(run1piconset_C),1);
-run1piconset_D = xlsread('run1piconset_D');
-d_d1 = zeros(length(run1piconset_D),1);
-run2piconset_A = xlsread('run2piconset_A');
-a1_d1 = zeros(length(run2piconset_A),1);
-run2piconset_B = xlsread('run2piconset_B');
-b1_d1 = zeros(length(run2piconset_B),1);
-run2piconset_C = xlsread('run2piconset_C');
-c1_d1 = zeros(length(run2piconset_C),1);
-run2piconset_D = xlsread('run2piconset_D');
-d1_d1 = zeros(length(run2piconset_D),1);
-run1stionset_A= xlsread('run1stionset_A');
-a_d2 = zeros(length(run1stionset_A),1);
-run1stionset_B = xlsread('run1stionset_B');
-b_d2 = zeros(length(run1stionset_B),1);
-run1stionset_C = xlsread('run1stionset_C');
-c_d2 = zeros(length(run1stionset_C),1);
-run1stionset_D = xlsread('run1stionset_D');
-d_d2 = zeros(length(run1stionset_D),1);
-run2stionset_A = xlsread('run2stionset_A');
-a1_d2 = zeros(length(run2stionset_A),1);
-run2stionset_B = xlsread('run2stionset_B');
-b1_d2 = zeros(length(run2stionset_B),1);
-run2stionset_C = xlsread('run2stionset_C');
-c1_d2 = zeros(length(run2stionset_C),1);
-run2stionset_D = xlsread('run2stionset_D');
-d1_d2 = zeros(length(run2stionset_D),1);
-run1RT_A = xlsread('run1RT_A');
-run1RT_B = xlsread('run1RT_B');
-run1RT_C = xlsread('run1RT_C');
-run1RT_D = xlsread('run1RT_D');
-run2RT_A = xlsread('run2RT_A');
-run2RT_B = xlsread('run2RT_B');
-run2RT_C = xlsread('run2RT_C');
-run2RT_D = xlsread('run2RT_D');
-
-motiondir = dir(['G:\data\0010\RealignParameter\',q,'\rp*']);
-motiondire = motiondir.name;
-motiondir1 = dir(['G:\data\0010\RealignParameter\',q,'\S2_rp*']);
-motiondire1 = motiondir1.name;
-motiondirectory = ['G:\data\0010\RealignParameter\',q,'\']
-%%
-matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
-matlabbatch{1}.spm.stats.fmri_spec.timing.RT = 3;
-matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = 16;
-matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 8;
-%%
-matlabbatch{1}.spm.stats.fmri_spec.dir = cellstr(outputdir);
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).scans =cellstr(f);
-%%
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(1).name = 'fixA';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(1).onset = run1fixonset_A;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(1).duration = a_d ;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(1).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(1).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(1).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(2).name = 'fixB';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(2).onset = run1fixonset_B;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(2).duration = b_d;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(2).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(2).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(2).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(3).name = 'fixC';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(3).onset = run1fixonset_C;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(3).duration = c_d;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(3).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(3).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(3).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(4).name = 'fixD';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(4).onset = run1fixonset_D;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(4).duration = d_d;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(4).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(4).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(4).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(5).name = 'stiA';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(5).onset = run1stionset_A;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(5).duration = a_d2 ;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(5).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(5).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(5).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(6).name = 'stiB';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(6).onset = run1stionset_B;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(6).duration = b_d2;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(6).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(6).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(6).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(7).name = 'stiC';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(7).onset = run1stionset_C;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(7).duration = c_d2;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(7).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(7).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(7).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(8).name = 'stiD';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(8).onset = run1stionset_D;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(8).duration = d_d2;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(8).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(8).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(8).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(9).name = 'picA';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(9).onset = run1piconset_A;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(9).duration = a_d1 ;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(9).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(9).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(9).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(10).name = 'picB';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(10).onset = run1piconset_B;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(10).duration = b_d1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(10).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(10).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(10).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(11).name = 'picC';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(11).onset = run1piconset_C;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(11).duration = c_d1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(11).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(11).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(11).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(12).name = 'picD';
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(12).onset = run1piconset_D;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(12).duration = d_d1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(12).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(12).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).cond(12).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).multi = {''};
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).regress = struct('name', {}, 'val', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).multi_reg = {[motiondirectory,motiondire]};
-matlabbatch{1}.spm.stats.fmri_spec.sess(1).hpf = 128;
-%%
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).scans = cellstr(f1);
-%%
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(1).name = 'fixA';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(1).onset = run2fixonset_A;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(1).duration = a1_d ;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(1).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(1).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(1).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(2).name = 'fixB';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(2).onset = run2fixonset_B;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(2).duration = b1_d;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(2).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(2).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(2).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(3).name = 'fixC';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(3).onset = run2fixonset_C;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(3).duration = c1_d;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(3).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(3).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(3).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(4).name = 'fixD';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(4).onset = run2fixonset_D;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(4).duration = d1_d;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(4).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(4).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(4).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(5).name = 'stiA';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(5).onset = run2stionset_A;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(5).duration = a1_d2 ;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(5).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(5).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(5).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(6).name = 'stiB';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(6).onset = run2stionset_B;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(6).duration = b1_d2;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(6).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(6).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(6).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(7).name = 'stiC';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(7).onset = run2stionset_C;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(7).duration = c1_d2;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(7).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(7).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(7).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(8).name = 'stiD';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(8).onset = run2stionset_D;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(8).duration = d1_d2;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(8).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(8).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(8).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(9).name = 'picA';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(9).onset = run2piconset_A;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(9).duration = a1_d1 ;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(9).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(9).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(9).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(10).name = 'picB';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(10).onset = run2piconset_B;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(10).duration = b1_d1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(10).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(10).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(10).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(11).name = 'picC';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(11).onset = run2piconset_C;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(11).duration = c1_d1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(11).tmod = 0;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(11).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(11).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(12).name = 'picD';
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(12).onset = run2piconset_D;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(12).duration = d1_d1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(12).pmod = struct('name', {}, 'param', {}, 'poly', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).cond(12).orth = 1;
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).multi = {''};
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).regress = struct('name', {}, 'val', {});
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).multi_reg = {[motiondirectory,motiondire1]};
-matlabbatch{1}.spm.stats.fmri_spec.sess(2).hpf = 128;
-matlabbatch{1}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
-matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
-matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
-matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
-matlabbatch{1}.spm.stats.fmri_spec.mthresh = 0.8;
-matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
-matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
-matlabbatch{2}.spm.stats.fmri_est.spmmat(1) = cfg_dep('fMRI model specification: SPM.mat File', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
-matlabbatch{2}.spm.stats.fmri_est.write_residuals = 0;
-matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
-matlabbatch{3}.spm.stats.con.spmmat(1) = cfg_dep('Model estimation: SPM.mat File', substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('.','spmmat'));
-matlabbatch{3}.spm.stats.con.consess{1}.tcon.name = 'fixA';
-matlabbatch{3}.spm.stats.con.consess{1}.tcon.weights = [0.5 0 0 0 zeros(1,14) 0.5];
-matlabbatch{3}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{2}.tcon.name = 'fixB';
-matlabbatch{3}.spm.stats.con.consess{2}.tcon.weights = [0 0.5 0 0 zeros(1,14) 0 0.5];
-matlabbatch{3}.spm.stats.con.consess{2}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{3}.tcon.name = 'fixC';
-matlabbatch{3}.spm.stats.con.consess{3}.tcon.weights = [0 0 0.5 0 0 zeros(1,14) 0 0 0.5];
-matlabbatch{3}.spm.stats.con.consess{3}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{4}.tcon.name = 'fixD';
-matlabbatch{3}.spm.stats.con.consess{4}.tcon.weights = [0 0 0 0.5 0 0 zeros(1,14) 0 0 0 0.5];
-matlabbatch{3}.spm.stats.con.consess{4}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{5}.tcon.name = 'stiA';
-matlabbatch{3}.spm.stats.con.consess{5}.tcon.weights = [zeros(1,4) 0.5 zeros(1,13) zeros(1,4) 0.5 zeros(1,13)];
-matlabbatch{3}.spm.stats.con.consess{5}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{6}.tcon.name = 'stiB';
-matlabbatch{3}.spm.stats.con.consess{6}.tcon.weights = [zeros(1,5) 0.5 zeros(1,12) zeros(1,5) 0.5 zeros(1,12)];
-matlabbatch{3}.spm.stats.con.consess{6}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{7}.tcon.name = 'stiC';
-matlabbatch{3}.spm.stats.con.consess{7}.tcon.weights = [zeros(1,6) 0.5 zeros(1,11) zeros(1,6) 0.5 zeros(1,11)];
-matlabbatch{3}.spm.stats.con.consess{7}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{8}.tcon.name = 'stiD';
-matlabbatch{3}.spm.stats.con.consess{8}.tcon.weights = [zeros(1,7) 0.5 zeros(1,10) zeros(1,7) 0.5 zeros(1,10)];
-matlabbatch{3}.spm.stats.con.consess{8}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{9}.tcon.name = 'picA';
-matlabbatch{3}.spm.stats.con.consess{9}.tcon.weights = [zeros(1,8) 0.5 zeros(1,9) zeros(1,8) 0.5 zeros(1,9)];
-matlabbatch{3}.spm.stats.con.consess{9}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{10}.tcon.name = 'picB';
-matlabbatch{3}.spm.stats.con.consess{10}.tcon.weights = [zeros(1,9) 0.5 zeros(1,8) zeros(1,9) 0.5 zeros(1,8)];
-matlabbatch{3}.spm.stats.con.consess{10}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{11}.tcon.name = 'picC';
-matlabbatch{3}.spm.stats.con.consess{11}.tcon.weights = [zeros(1,10) 0.5 zeros(1,7) zeros(1,10) 0.5 zeros(1,7)];
-matlabbatch{3}.spm.stats.con.consess{11}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.consess{12}.tcon.name = 'picD';
-matlabbatch{3}.spm.stats.con.consess{12}.tcon.weights = [zeros(1,11) 0.5 zeros(1,6) zeros(1,11) 0.5 zeros(1,6)];
-matlabbatch{3}.spm.stats.con.consess{12}.tcon.sessrep = 'none';
-matlabbatch{3}.spm.stats.con.delete = 0;
-%%
+% spm_get_defaults('cmdline',true);
+clear matlabbatch
+data_path = ['F:\BaiduNetdiskDownload\data\EMOTION\pre_fMRI\'];
+subname = dir([data_path,'Fun\sub*']);
+% 每个被试的文件夹名，T1像和功能像的要一致
+runs_name = {'run1',;'run2';'run3';'run4';}
+% T1像和功能像的上一层文件夹的路径
+TIFFileInLog=[data_path,'Norm\'] ;
+mkdir(TIFFileInLog);
+for i = 9:size(subname)
+ sub = subname(i).name;
+ for runmuber = 1:4
+runname = runs_name{runmuber,:};
+fundata = spm_select('ExtFPList', fullfile(data_path,'Fun\',sub,runname), '.*\.nii$');
+T1data = spm_select('ExtFPList', fullfile(data_path,'T1\',sub), '^co.*\.nii$');
+TRdata =2;
+% 改成你的TR
+slice_number = 25;
+% 改成你的slicenumber
+TAdata = TRdata-(TRdata/slice_number);
+reference_number = 25;
+% 改成你的参考层
+slice_order = [1:2:25,2:2:25];
+% 改成你的扫描顺序
+% 剩下的就等着就行啦
+% Slice Timing Correction
+%--------------------------------------------------------------------------
+matlabbatch{1}.spm.temporal.st.scans{1} = cellstr(fundata);
+matlabbatch{1}.spm.temporal.st.nslices = slice_number;
+matlabbatch{1}.spm.temporal.st.tr = TRdata;
+matlabbatch{1}.spm.temporal.st.ta = TAdata;
+matlabbatch{1}.spm.temporal.st.so = slice_order;
+matlabbatch{1}.spm.temporal.st.refslice = reference_number;
+% Realign
+%--------------------------------------------------------------------------
+matlabbatch{2}.spm.spatial.realign.estwrite.data{1} = cellstr(spm_file(fundata,'prefix','a'));
+% Coregister
+%--------------------------------------------------------------------------
+matlabbatch{3}.spm.spatial.coreg.estimate.ref    = cellstr(spm_file(fundata(1,:),'prefix','meana'));
+matlabbatch{3}.spm.spatial.coreg.estimate.source = cellstr(T1data);
+% Segment
+%--------------------------------------------------------------------------
+matlabbatch{4}.spm.spatial.preproc.channel.vols  = cellstr(T1data);
+matlabbatch{4}.spm.spatial.preproc.channel.write = [0 1];
+matlabbatch{4}.spm.spatial.preproc.warp.write    = [0 1];
+% Normalise: Write
+%--------------------------------------------------------------------------
+matlabbatch{5}.spm.spatial.normalise.write.subj.def      = cellstr(spm_file(T1data,'prefix','y_','ext','nii'));
+matlabbatch{5}.spm.spatial.normalise.write.subj.resample = cellstr(char(spm_file(fundata,'prefix','ra')));
+matlabbatch{5}.spm.spatial.normalise.write.woptions.bb = [-90 -126 -72
+                                                          90 90 108];
+matlabbatch{5}.spm.spatial.normalise.write.woptions.vox  = [3 3 3];
+% Smooth
+%--------------------------------------------------------------------------
+matlabbatch{6}.spm.spatial.smooth.data = cellstr(spm_file(fundata,'prefix','wra'));
+matlabbatch{6}.spm.spatial.smooth.fwhm = [6 6 6];
 spm_jobman('run',matlabbatch);
+Path=fileparts(fundata(1,:));
+TIFFileInRaw=fullfile(Path, ['NormChk_', sub,runname '.tif']);
+fundata1 = spm_select('ExtFPList', fullfile(data_path,'Fun\',sub,runname), '^wra.*\.nii$');
+GRETNAPath=fileparts(which('gretna.m'));
+Ch2Filename=fullfile(GRETNAPath, 'Templates', 'ch2.nii');
+
+% Follow Mingrui Xia's SeeCAT
+ch2_hdr=spm_vol(Ch2Filename);
+ch2_vol=spm_read_vols(ch2_hdr);
+    
+c_view_u=ch2_vol(:,ceil(end/2),:);
+c_view_u=squeeze(c_view_u)';
+c_view_u=c_view_u(end:-1:1,:);
+c_view_u=c_view_u./max(c_view_u(:))*255;
+c_view_u=imresize(c_view_u,217/181);
+    
+s_view_u=ch2_vol(ceil(end/2),:,:);
+s_view_u=squeeze(s_view_u)';
+s_view_u=s_view_u(end:-1:1,:);
+s_view_u=s_view_u./max(s_view_u(:))*255;
+s_view_u=imresize(s_view_u, 217/181);
+    
+a_view_u=ch2_vol(:,:,ceil(end/2));
+a_view_u=squeeze(a_view_u)';
+a_view_u=a_view_u(end:-1:1,:);
+a_view_u=a_view_u./max(a_view_u(:))*255;
+    
+underlay=uint8([c_view_u, s_view_u, a_view_u]);
+underlay=repmat(underlay, [1, 1, 3]);
+
+mean_hdr=spm_vol(fundata1);
+mean_vol=spm_read_vols(mean_hdr);
+        
+c_view_o=mean_vol(:,ceil(end/2),:);
+c_view_o=squeeze(c_view_o)';
+c_view_o=c_view_o(end:-1:1,:);
+c_view_o=c_view_o./max(c_view_o(:))*255;
+c_view_o=imresize(c_view_o, size(c_view_u));
+        
+s_view_o=mean_vol(ceil(end/2),:,:);
+s_view_o=squeeze(s_view_o)';
+s_view_o=s_view_o(end:-1:1,:);
+s_view_o=s_view_o./max(s_view_o(:))*255;
+s_view_o=imresize(s_view_o, size(s_view_u));
+        
+a_view_o=mean_vol(:,:,ceil(end/2));
+a_view_o=squeeze(a_view_o)';
+a_view_o=a_view_o(end:-1:1,:);
+a_view_o=a_view_o./max(a_view_o(:))*255;
+a_view_o=imresize(a_view_o, size(a_view_u));
+        
+overlay=uint8([c_view_o, s_view_o, a_view_o]);
+overlay=repmat(overlay,[1,1,3]);
+overlay(:,:,2:3)=overlay(:,:,2:3)/2;
+outputimg=imresize(imadd(underlay./2,overlay./2),2);      
+imwrite(outputimg, TIFFileInRaw);
+%
+movefile(TIFFileInRaw, TIFFileInLog);
+%headmotion
+RpFile = dir([data_path,'Fun\',sub,filesep,runname,'\*.txt']);
+RPdir = fullfile(data_path,'Fun\',sub,runname);
+Rp = load([RPdir,filesep,RpFile.name]);
+MaxRp = max(abs(Rp));
+MaxRp(4:6)=MaxRp(4:6)*180/pi;
+% 3mm 3Degree
+if any(MaxRp>3)
+    CPath=fullfile(data_path, 'MaxHeadMotionParameterLargerThan3mmOr3Degree',filesep,sub,filesep,runname);
+    if exist(CPath, 'dir')~=7
+        mkdir(CPath);
+    end
+    File=fullfile(CPath,filesep,'headmotion.txt');
+    save(File, 'MaxRp', '-ASCII', '-DOUBLE','-TABS');
 end
+% 2mm 2Degree
+if any(MaxRp>2)
+    CPath=fullfile(data_path, 'MaxHeadMotionParameterLargerThan2mmOr2Degree',filesep,sub,filesep,runname);
+    if exist(CPath, 'dir')~=7
+        mkdir(CPath);
+    end
+    File=fullfile(CPath,filesep,'headmotion.txt');
+    save(File, 'MaxRp', '-ASCII', '-DOUBLE','-TABS');
+end
+% 1mm 1Degree
+if any(MaxRp>1)
+    CPath=fullfile(data_path, 'MaxHeadMotionParameterLargerThan1mmOr1Degree',filesep,sub,filesep,runname);
+    if exist(CPath, 'dir')~=7
+        mkdir(CPath);
+    end
+    File=fullfile(CPath,filesep,'headmotion.txt');
+    save(File, 'MaxRp', '-ASCII', '-DOUBLE','-TABS');    
+end
+ end
+end
+disp('all done')
